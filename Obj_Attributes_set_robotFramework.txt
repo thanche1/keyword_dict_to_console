@@ -1,0 +1,43 @@
+*** Settings ***
+Documentation    	This is Task_1 implementation of hg_session_data = hg.get_session_data()
+Library  		/home/thantse/robotframework_tests/Task_1/lib/haf/speedport.py
+Library  		/home/thantse/robotframework_tests/Task_1/lib/customLib.py
+Library 		speedport.DevHg   		${hg_telnet_user}		${hg_telnet_password} 	host_or_location=${host_or_location}	auth={auth}  	 WITH NAME		obj
+
+*** Variables ***
+${hg_telnet_user} 		xxxxxxx
+${hg_telnet_password}		xxxxxxx
+${dslf-config}			dslf-config
+${result_auth}				
+${hg_password}			xxxxxx
+${host_or_location}			192.168.23.1
+
+
+*** Keywords ***
+
+Test_Hg
+	${result}= 		obj.get_session_data
+	log to console		${result}
+
+Test_Auth
+	${result_auth} = 	customLib.qwaszx	${dslf-config}      ${hg_password}
+	log to console		${result_auth}
+
+
+
+Test_Hg_authorized
+	Log to console 			Hello
+	${result_auth} = 	customLib.qwaszx	${dslf-config}      ${hg_password}
+	Log to console			${result_auth}	
+	${result}= 		obj.get_session_data
+	log to console		${result}
+
+Test_instantiation
+	${atributes} = 	Get Library Instance 	obj
+	Log to console	${atributes.hg_telnet_password}
+	${result_auth} = 	customLib.qwaszx	${dslf-config}      ${hg_password}
+	Log to console		${result_auth}
+	${atributes.auth} = 		Set Variable 	${result_auth}
+	Log to console 		${atributes.auth}
+	${result}= 		obj.get_session_data
+	log to console		${result}
