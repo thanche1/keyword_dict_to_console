@@ -1,0 +1,50 @@
+
+
+Here is a way you can achieve the desired result.
+
+Lets take example of demo.py which have class Sample
+
+Sample class has init ,getting_path() as methods
+
+
+
+class Sample(object):
+    def __init__(self,path,device):
+            self.device=device
+            self.path = path
+
+    def getting_path(self):
+            return self.path 
+
+Lets use these methods in Robotfile
+
+*** Settings ***
+#in the Library section you reference python class in below format 
+# (file.class_name) so file is demo.py and class is Sample 
+
+Library      demo.Sample    ${path}    ${device}    WITH NAME    obj
+
+#path and device are two arguments required by __init__,'obj' will be used to 
+#access the methods in python class
+
+Library    Collections
+
+*** Variables ***
+${path}    c:
+${device}    samsung
+
+
+*** Test Cases ***
+Test
+    Test_python_class
+
+*** Keywords ***
+Test_python_class
+
+    #with obj you now call the method of python file 
+    ${result} =    obj.getting_path
+
+    #if method need any argument , this can be passed like
+    #${result} =    obj.getting_path    ${arg1}    ${arg2}
+    log to console    ${result}
+
